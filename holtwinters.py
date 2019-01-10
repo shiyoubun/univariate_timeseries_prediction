@@ -32,7 +32,7 @@ def RMSE(params, *args):
 
 		if type == 'additive':
 
-			s = [Y[i] - s[0] for i in range(k)]
+			p = [Y[i] - s[0] for i in range(k)]
 			y = [s[0] + t[0] + p[0]]
 
 			for i in range(len(Y)):
@@ -44,8 +44,8 @@ def RMSE(params, *args):
 
 		elif type == 'multiplicative':
 
-			s = [Y[i] / s[0] for i in range(k)]
-			y = [(a[0] + b[0]) * s[0]]
+			p = [Y[i] / s[0] for i in range(k)]
+			y = [(s[0] + t[0]) * p[0]]
 
 			for i in range(len(Y)):
 
