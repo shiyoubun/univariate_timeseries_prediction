@@ -13,46 +13,46 @@ def RMSE(params, *args):
 	if type == 'linear':
 
 		alpha, beta = params
-		a = [Y[0]]
-		b = [Y[1] - Y[0]]
-		y = [a[0] + b[0]]
+		s = [Y[0]]
+		t = [Y[1] - Y[0]]
+		y = [s[0] + t[0]]
 
 		for i in range(len(Y)):
 
-			a.append(alpha * Y[i] + (1 - alpha) * (a[i] + b[i]))
-			b.append(beta * (a[i + 1] - a[i]) + (1 - beta) * b[i])
-			y.append(a[i + 1] + b[i + 1])
+			s.append(alpha * Y[i] + (1 - alpha) * (s[i] + t[i]))
+			t.append(beta * (s[i + 1] - s[i]) + (1 - beta) * t[i])
+			y.append(s[i + 1] + t[i + 1])
 
 	else:
 
 		alpha, beta, gamma = params
-		m = args[2]
-		a = [sum(Y[0:m]) / float(m)]
-		b = [(sum(Y[m:2 * m]) - sum(Y[0:m])) / m ** 2]
+		k = args[2]
+		s = [sum(Y[0:k]) / float(k)]
+		t = [(sum(Y[k:2 * k]) - sum(Y[0:k])) / k]
 
 		if type == 'additive':
 
-			s = [Y[i] - a[0] for i in range(m)]
-			y = [a[0] + b[0] + s[0]]
+			s = [Y[i] - s[0] for i in range(k)]
+			y = [s[0] + t[0] + p[0]]
 
 			for i in range(len(Y)):
 
-				a.append(alpha * (Y[i] - s[i]) + (1 - alpha) * (a[i] + b[i]))
-				b.append(beta * (a[i + 1] - a[i]) + (1 - beta) * b[i])
-				s.append(gamma * (Y[i] - a[i] - b[i]) + (1 - gamma) * s[i])
-				y.append(a[i + 1] + b[i + 1] + s[i + 1])
+				s.append(alpha * (Y[i] - p[i]) + (1 - alpha) * (s[i] + t[i]))
+				t.append(beta * (s[i + 1] - s[i]) + (1 - beta) * t[i])
+				p.append(gamma * (Y[i] - s[i]) + (1 - gamma) * p[i])
+				y.append(s[i + 1] + t[i + 1] + p[i + 1])
 
 		elif type == 'multiplicative':
 
-			s = [Y[i] / a[0] for i in range(m)]
+			s = [Y[i] / s[0] for i in range(k)]
 			y = [(a[0] + b[0]) * s[0]]
 
 			for i in range(len(Y)):
 
-				a.append(alpha * (Y[i] / s[i]) + (1 - alpha) * (a[i] + b[i]))
-				b.append(beta * (a[i + 1] - a[i]) + (1 - beta) * b[i])
-				s.append(gamma * (Y[i] / (a[i] + b[i])) + (1 - gamma) * s[i])
-				y.append((a[i + 1] + b[i + 1]) * s[i + 1])
+				s.append(alpha * (Y[i] / p[i]) + (1 - alpha) * (s[i] + t[i]))
+				t.append(beta * (s[i + 1] - s[i]) + (1 - beta) * t[i])
+				p.append(gamma * (Y[i] / (s[i]) + (1 - gamma) * p[i])
+				y.append((s[i + 1] + t[i + 1]) * p[i + 1])
 
 		else:
 
